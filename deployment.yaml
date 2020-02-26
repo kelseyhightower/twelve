@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: twelve
+  name: twelve
+spec:
+  minReadySeconds: 10
+  selector:
+    matchLabels:
+      app: twelve
+  template:
+    metadata:
+      labels:
+        app: twelve
+    spec:
+      containers:
+        - name: twelve
+          image: "gcr.io/hightowerlabs/twelve"
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "2"
+            requests:
+              memory: "32Mi"
+              cpu: 500m
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: ssl-certificates
+              mountPath: "/etc/ssl"
+      terminationGracePeriodSeconds: 15
+      volumes:
+        - name: ssl-certificates
+          hostPath:
+            path: /etc/ssl
+            type: Directory
