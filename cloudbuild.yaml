@@ -2,5 +2,5 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/twelve', '.']
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/twelve']
-images: ['gcr.io/$PROJECT_ID/twelve']
+    args: ['push', 'gcr.io/$PROJECT_ID/twelve:$TAG_NAME']
+images: ['gcr.io/$PROJECT_ID/twelve:$TAG_NAME']
